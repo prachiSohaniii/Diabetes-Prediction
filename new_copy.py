@@ -4,8 +4,10 @@ import numpy as np
 import joblib 
 import streamlit.components.v1 as components  # Import the components module
 import os
-
+import sys
 from dotenv import load_dotenv
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 load_dotenv()  # Load environment variables from .env file
@@ -302,6 +304,9 @@ def app():
         tableau_dashboard()
 
 if __name__ == "__main__":
-    app()
+    port = int(os.environ.get("PORT", 8501))
+    import streamlit.web.cli as stcli
+    sys.argv = ["streamlit", "run", "app.py", "--server.port", str(port), "--server.address", "0.0.0.0"]
+    sys.exit(stcli.main())
 
 
