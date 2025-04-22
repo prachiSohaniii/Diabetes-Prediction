@@ -1,4 +1,3 @@
-import mysql.connector
 import streamlit as st
 import numpy as np
 import joblib 
@@ -19,10 +18,6 @@ import os
 
 # Load compressed model
 model_path = "random_forest_diabetes_compressed.pkl"
-
-
-if not os.path.exists(model_path):
-    raise FileNotFoundError("Compressed model file not found. Make sure 'random_forest_diabetes_compressed.pkl' is in your project directory.")
 
 model = joblib.load(model_path)
 
