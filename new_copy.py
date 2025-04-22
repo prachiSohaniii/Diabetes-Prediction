@@ -4,21 +4,15 @@ import numpy as np
 import joblib 
 import streamlit.components.v1 as components  # Import the components module
 import os
-import sys
-from dotenv import load_dotenv
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
-
-load_dotenv()  # Load environment variables from .env file
-
-def connect_to_db():
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME")
-    )
+# Function to connect to MySQL Workbench
+# def connect_to_db():
+#     return mysql.connector.connect(
+#         host="localhost",  # Change if your database is hosted remotely
+#         user="root",
+#         password="Disha@2002",
+#         database="practice"
+#     )
 
 # Load the trained model
 
@@ -181,51 +175,51 @@ def convert_income_to_scale(income_inr):
 
 
 # Function to insert data into MySQL
-def insert_data(HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
-                HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
-                Age, Education, Income, Prediction):
+# def insert_data(HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
+#                 HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
+#                 Age, Education, Income, Prediction):
     
-    conn = connect_to_db()
-    cursor = conn.cursor()
+#     conn = connect_to_db()
+#     cursor = conn.cursor()
 
     # Ensure the table exists
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS health_data2 (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            HighBP INT,
-            HighChol INT,
-            BMI FLOAT,
-            Stroke INT,
-            HeartDiseaseorAttack INT,
-            PhysActivity INT,
-            HvyAlcoholConsump INT,
-            AnyHealthcare INT,
-            GenHlth INT,
-            PhysHlth INT,
-            DiffWalk INT,
-            Sex INT,
-            Age INT,
-            Education INT,
-            Income INT,
-            Prediction VARCHAR(50),
-            Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
+    # cursor.execute("""
+    #     CREATE TABLE IF NOT EXISTS health_data2 (
+    #         id INT AUTO_INCREMENT PRIMARY KEY,
+    #         HighBP INT,
+    #         HighChol INT,
+    #         BMI FLOAT,
+    #         Stroke INT,
+    #         HeartDiseaseorAttack INT,
+    #         PhysActivity INT,
+    #         HvyAlcoholConsump INT,
+    #         AnyHealthcare INT,
+    #         GenHlth INT,
+    #         PhysHlth INT,
+    #         DiffWalk INT,
+    #         Sex INT,
+    #         Age INT,
+    #         Education INT,
+    #         Income INT,
+    #         Prediction VARCHAR(50),
+    #         Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    #     )
+    # """)
 
-    # Insert the data
-    cursor.execute("""
-        INSERT INTO health_data2 
-        (HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
-         HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
-         Age, Education, Income, Prediction) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """, (HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
-          HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
-          Age, Education, Income, Prediction))
+    # # Insert the data
+    # cursor.execute("""
+    #     INSERT INTO health_data2 
+    #     (HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
+    #      HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
+    #      Age, Education, Income, Prediction) 
+    #     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    # """, (HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
+    #       HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
+    #       Age, Education, Income, Prediction))
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+    # conn.commit()
+    # cursor.close()
+    # conn.close()
 
 # Prediction Page
 def prediction_page():
@@ -276,9 +270,9 @@ def prediction_page():
             prediction_text = "No Diabetes" if prediction == 0 else "Diabetes" 
 
             # Store data in MySQL
-            insert_data(HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
-                    HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
-                    a_age, Education, a_income, prediction_text)
+            # insert_data(HighBP, HighChol, BMI, Stroke, HeartDiseaseorAttack, PhysActivity, 
+            #         HvyAlcoholConsump, AnyHealthcare, GenHlth, PhysHlth, DiffWalk, Sex, 
+            #         a_age, Education, a_income, prediction_text)
 
 
             # Display result
@@ -304,9 +298,6 @@ def app():
         tableau_dashboard()
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8501))
-    import streamlit.web.cli as stcli
-    sys.argv = ["streamlit", "run", "app.py", "--server.port", str(port), "--server.address", "0.0.0.0"]
-    sys.exit(stcli.main())
+    app()
 
 
